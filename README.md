@@ -13,7 +13,7 @@ Enable data-driven decisions for operational efficiency, route planning, pricing
 
 ## 🧾 2. Dataset Used
 Raw Datasets:
-unclean_business (Business class flight data)
+unclean_business (Business class flight data) - https://github.com/satish2502/Data-Analytics-Flight-Fare-Analysis-and-Revenue-Insights-using-SQL/blob/main/business_Un.csv
 
 unclean_economy (Economy class flight data) - https://github.com/satish2502/Data-Analytics-Flight-Fare-Analysis-and-Revenue-Insights-using-SQL/blob/main/economy_Un.csv
 
