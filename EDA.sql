@@ -179,7 +179,7 @@ SELECT Airline, Source, Destination, RouteRevenue
 FROM RankedRoutes
 WHERE RouteRank <= 3
 ORDER BY Airline, RouteRevenue DESC;
---Insight: Shows each airline’s most lucrative routes.
+--Insight: Shows each airlineâ€™s most lucrative routes.
 
 --3. Find average price change month-over-month (LAG function)
 WITH MonthlyAvg AS (
@@ -258,7 +258,7 @@ FROM Flight_Data
 GROUP BY Airline
 ORDER BY RevenuePercentage DESC;
 
---Insight: Shows each airline’s revenue share in the market.
+--Insight: Shows each airlineâ€™s revenue share in the market.
 
 --Analyze price difference between classes for same route (JOIN)
 
@@ -310,7 +310,7 @@ WITH MonthlyRevenue AS (
         Year,
         Month,
         SUM(CAST(Price AS FLOAT)) AS TotalRevenue
-    FROM CleanFinalDataset
+    FROM Flight_Data
     GROUP BY Year, Month
 ),
 RollingAvg AS (
@@ -328,7 +328,7 @@ ORDER BY Year, Month;
 WITH PriceRank AS (
     SELECT *,
         PERCENT_RANK() OVER (ORDER BY CAST(Price AS FLOAT) DESC) AS PricePercentile
-    FROM CleanFinalDataset
+    FROM Flight_Data
 )
 SELECT *
 FROM PriceRank
@@ -341,7 +341,7 @@ WITH AirlineFirstMonth AS (
     SELECT 
         Airline,
         MIN(CONCAT(Year, '-', Month)) AS FirstMonth
-    FROM CleanFinalDataset
+    FROM Flight_Data
     GROUP BY Airline
 ),
 RevenueByMonth AS (
@@ -349,7 +349,7 @@ RevenueByMonth AS (
         Airline,
         CONCAT(Year, '-', Month) AS Period,
         SUM(CAST(Price AS FLOAT)) AS TotalRevenue
-    FROM CleanFinalDataset
+    FROM Flight_Data
     GROUP BY Airline, Year, Month
 )
 SELECT 
@@ -368,7 +368,7 @@ SELECT
     COUNT(*) AS TotalFlights,
     SUM(CAST(Price AS FLOAT)) AS TotalRevenue,
     AVG(CAST(Duration AS FLOAT)) AS AvgDuration
-FROM CleanFinalDataset
+FROM Flight_Data
 GROUP BY Dept_time_Period
 ORDER BY TotalFlights DESC;
 --Insight: Shows demand concentration across the day and average trip lengths.
@@ -380,7 +380,7 @@ SELECT TOP 10
     Destination,
     SUM(CAST(Price AS FLOAT)) AS TotalRevenue,
     COUNT(*) AS TotalFlights
-FROM CleanFinalDataset
+FROM Flight_Data
 GROUP BY Source, Destination
 ORDER BY TotalRevenue DESC;
 Insight: Prioritize routes contributing the most to revenue.
@@ -396,7 +396,7 @@ SELECT
     END AS Quarter,
     COUNT(*) AS TotalFlights,
     SUM(CAST(Price AS FLOAT)) AS TotalRevenue
-FROM CleanFinalDataset
+FROM Flight_Data
 GROUP BY 
     CASE 
         WHEN Month IN ('January', 'February', 'March') THEN 'Q1'
@@ -413,21 +413,18 @@ SELECT
     Stops,
     COUNT(*) AS TotalFlights,
     AVG(CAST(Price AS FLOAT)) AS AvgPrice
-FROM CleanFinalDataset
+FROM Flight_Data
 GROUP BY Stops
 ORDER BY Stops;
 --Insight: Understand how stopovers influence customer pricing decisions.
 
 -- 8. Class-based revenue contribution for each airline
-sql
-Copy
-Edit
 SELECT 
     Airline,
     Class,
     SUM(CAST(Price AS FLOAT)) AS TotalRevenue,
     SUM(CAST(Price AS FLOAT)) * 100.0 / SUM(SUM(CAST(Price AS FLOAT))) OVER (PARTITION BY Airline) AS ClassRevenueShare
-FROM CleanFinalDataset
+FROM Flight_Data
 GROUP BY Airline, Class
 ORDER BY Airline, ClassRevenueShare DESC;
 --Insight: See how much revenue comes from Economy vs Business for each airline.
@@ -436,7 +433,7 @@ ORDER BY Airline, ClassRevenueShare DESC;
 
 -- Assuming there's a column DelayMinutes
 SELECT *
-FROM CleanFinalDataset
+FROM Flight_Data
 WHERE CAST(Duration AS FLOAT) > (
     SELECT AVG(CAST(Duration AS FLOAT)) FROM CleanFinalDataset
 )
@@ -451,7 +448,7 @@ SELECT
     SUM(CAST(Price AS FLOAT)) AS TotalRevenue,
     COUNT(*) * 100.0 / (SELECT COUNT(*) FROM CleanFinalDataset) AS FlightSharePercent,
     SUM(CAST(Price AS FLOAT)) * 100.0 / (SELECT SUM(CAST(Price AS FLOAT)) FROM CleanFinalDataset) AS RevenueSharePercent
-FROM CleanFinalDataset
+FROM Flight_Data
 GROUP BY Airline
 ORDER BY RevenueSharePercent DESC;
 --Insight: Pinpoints airlines dominating the market by volume and revenue.
