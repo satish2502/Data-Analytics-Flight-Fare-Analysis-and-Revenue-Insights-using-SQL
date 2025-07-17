@@ -15,7 +15,7 @@ Enable data-driven decisions for operational efficiency, route planning, pricing
 Raw Datasets:
 unclean_business (Business class flight data)
 
-unclean_economy (Economy class flight data)
+unclean_economy (Economy class flight data) - https://github.com/satish2502/Data-Analytics-Flight-Fare-Analysis-and-Revenue-Insights-using-SQL/blob/main/economy_Un.csv
 
 Unified Structure (Post Cleaning):
 Flight_Data – A consolidated SQL view created after cleaning and transforming both datasets.
