@@ -446,8 +446,8 @@ SELECT
     Airline,
     COUNT(*) AS TotalFlights,
     SUM(CAST(Price AS FLOAT)) AS TotalRevenue,
-    COUNT(*) * 100.0 / (SELECT COUNT(*) FROM CleanFinalDataset) AS FlightSharePercent,
-    SUM(CAST(Price AS FLOAT)) * 100.0 / (SELECT SUM(CAST(Price AS FLOAT)) FROM CleanFinalDataset) AS RevenueSharePercent
+    COUNT(*) * 100.0 / (SELECT COUNT(*) FROM Flight_Data) AS FlightSharePercent,
+    SUM(CAST(Price AS FLOAT)) * 100.0 / (SELECT SUM(CAST(Price AS FLOAT)) FROM Flight_Data) AS RevenueSharePercent
 FROM Flight_Data
 GROUP BY Airline
 ORDER BY RevenueSharePercent DESC;
