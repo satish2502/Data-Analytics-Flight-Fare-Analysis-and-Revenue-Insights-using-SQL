@@ -429,18 +429,7 @@ GROUP BY Airline, Class
 ORDER BY Airline, ClassRevenueShare DESC;
 --Insight: See how much revenue comes from Economy vs Business for each airline.
 
--- 9. Detect flights with above-average delays (if Delay info exists)
-
--- Assuming there's a column DelayMinutes
-SELECT *
-FROM Flight_Data
-WHERE CAST(Duration AS FLOAT) > (
-    SELECT AVG(CAST(Duration AS FLOAT)) FROM CleanFinalDataset
-)
-ORDER BY CAST(Duration AS FLOAT) DESC;
---Insight: Highlight long-duration flights for investigation.
-
--- 10. Airline market share analysis by total flights and revenue
+-- 9. Airline market share analysis by total flights and revenue
 
 SELECT 
     Airline,
